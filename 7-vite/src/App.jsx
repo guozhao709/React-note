@@ -1,4 +1,6 @@
 import { useState } from "react";
+import MyInput from "./components/MyInput";
+import MyButton from "./components/MyButton";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -28,22 +30,15 @@ function App() {
       <h2>Login Form</h2>
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={username}
-          className={usernameClass}
-          onChange={(event) => setUsername(event.target.value)}
-        />
+        {/* 传递props(父子组件通信) */}
+        <MyInput uValue={username} setUvalue={setUsername} uClass={usernameClass} uType="text" />
         <br />
-        <input
-          type="password"
-          value={password}
-          className={passwordClass}
-          onChange={(event) => setPassword(event.target.value)}
-        />
+        <MyInput uValue={password} setUvalue={setPassword} uClass={passwordClass} uType="password" />
 
         <br />
-        <button type="submit">Login</button>
+        {/* children 用法 */}
+        <MyButton >Login</MyButton>
+        <MyButton >Register</MyButton>
       </form>
     </main>
   );
