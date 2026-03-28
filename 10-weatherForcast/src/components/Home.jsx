@@ -1,21 +1,24 @@
-import { Button } from '@mui/material';
-import Day from './Day';
-import styles from './Home.module.css';
-import { getCurrentWeather } from '../api/getWeatherApi';
+import { Button } from "@mui/material";
+import useGetWeatherForcast from "../hooks/useGetWeatherForcast";
+import Welcome from "./Welcome";
+import CurrentWeather from "./CurrentWeather";
 
-function Home({getPosition, buttonText}) {
+function Home({ getPosition, buttonText, setPageSwitched }) {
+  const { getCurrentWeather, isMutating, data } =
+    useGetWeatherForcast(getPosition);
 
-  const getWeatherForcast = async () => {
-
-    const { latitude, longitude } = await getPosition();
-    const data = await getCurrentWeather(latitude, longitude);
-    console.log("weatherObject:", data);
-  };
-
+  if (data) {
+    return <CurrentWeather data={data} setPageSwitched={setPageSwitched} />;
+  }
   return (
-    <section className={styles.section}>
-      <Day />
-      <Button variant="contained" size="large" onClick={getWeatherForcast}>
+    <section>
+      <Welcome />
+      <Button
+        disabled={isMutating}
+        variant="contained"
+        size="large"
+        onClick={getCurrentWeather}
+      >
         {buttonText}
       </Button>
     </section>

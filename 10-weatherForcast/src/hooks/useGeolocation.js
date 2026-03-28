@@ -1,21 +1,23 @@
 import { useState } from "react";
 
 const useGeolocation = () => {
-  const [buttonText, setButtonText] = useState("GET WEATHERFORCAST");
+  const [buttonText, setButtonText] = useState("Get CurrentWeather");
+  const [position, setPosition] = useState(null);
 
   const getPosition = async () => {
     return new Promise((resolve, reject) => {
       const geolocation = navigator.geolocation;
 
-      setButtonText("LOADING...");
+      setButtonText("Loading...");
 
       if (geolocation) {
         geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
 
+            setPosition({ latitude, longitude });
             resolve({ latitude, longitude });
-            setButtonText("GET WEATHERFORCAST");
+            setButtonText("Get WeatherForecast");
             
           },
           (error) => {
@@ -28,7 +30,7 @@ const useGeolocation = () => {
     });
   };
 
-  return { getPosition, buttonText };
+  return { getPosition, buttonText, position };
 };
 
 export default useGeolocation;
